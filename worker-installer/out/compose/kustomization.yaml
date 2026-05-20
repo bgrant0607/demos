@@ -1,0 +1,8 @@
+# Reproduce this render with:
+#   kustomize build --enable-exec --enable-alpha-plugins .
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - ../../package/bases/default
+transformers:
+    - transformers.yaml

@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    confighub.com/BridgeWorkerID: 9d26ef28-f3bb-4b26-b2dc-e90c7e942451
+  name: confighub-confighub-worker-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: confighub-worker
+    namespace: confighub

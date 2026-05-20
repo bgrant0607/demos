@@ -1,0 +1,76 @@
+apiVersion: installer.confighub.com/v1alpha1
+kind: ConfigHubTransformers
+metadata:
+    name: confighub-worker-transformers
+    annotations:
+        config.kubernetes.io/function: |
+            exec:
+              path: ./installer-transformer.sh
+spec:
+    groups:
+        - toolchain: Kubernetes/YAML
+          whereResource: ConfigHub.ResourceType = 'v1/Namespace'
+          invocations:
+            - name: set-name
+              args:
+                - confighub
+          description: Set the Namespace metadata.name.
+        - toolchain: Kubernetes/YAML
+          whereResource: ConfigHub.ResourceType = 'rbac.authorization.k8s.io/v1/ClusterRoleBinding'
+          invocations:
+            - name: set-name
+              args:
+                - confighub-confighub-worker-admin
+          description: Set the ClusterRoleBinding metadata.name (cluster-scoped, so it must encode the namespace).
+        - toolchain: Kubernetes/YAML
+          invocations:
+            - name: set-namespace
+              args:
+                - confighub
+            - name: set-default-names
+              args:
+                - nonprod-worker
+            - name: set-container-image
+              args:
+                - worker
+                - ghcr.io/confighubai/confighub-worker:latest
+            - name: set-pod-container-security-context-defaults
+            - name: set-container-volume-mount-path
+              args:
+                - worker
+                - tmp
+                - /tmp
+                - emptyDir
+            - name: set-annotation
+              args:
+                - confighub.com/BridgeWorkerID
+                - 9d26ef28-f3bb-4b26-b2dc-e90c7e942451
+            - name: set-container-port
+              args:
+                - worker
+                - http
+                - "9092"
+            - name: set-container-probe-defaults
+              args:
+                - --liveness-path=/internal/ok
+                - --readiness-path=/internal/ready
+                - --startup-path=/internal/ok
+            - name: set-int-path
+              args:
+                - apps/v1/Deployment
+                - spec.template.spec.containers.?name=worker.livenessProbe.periodSeconds
+                - "60"
+            - name: set-int-path
+              args:
+                - apps/v1/Deployment
+                - spec.template.spec.containers.?name=worker.readinessProbe.periodSeconds
+                - "60"
+          description: Per-install customization of the worker workload.
+        - toolchain: AppConfig/Env
+          invocations:
+            - name: set-string-path
+              args:
+                - ConfigHubWorker
+                - CONFIGHUB_URL
+                - http://127.0.0.1:9090
+          description: Set CONFIGHUB_URL on the worker env ConfigMap.

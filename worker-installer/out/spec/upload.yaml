@@ -1,0 +1,16 @@
+apiVersion: installer.confighub.com/v1alpha1
+kind: Upload
+metadata:
+  name: confighub-worker-upload
+spec:
+  package: confighub-worker
+  packageVersion: 0.1.0
+  spacePattern: nonprod-worker
+  spaces:
+    - package: confighub-worker
+      version: 0.1.0
+      slug: nonprod-worker
+      isParent: true
+  uploadedAt: "2026-05-17T00:47:00Z"
+  server: http://127.0.0.1:9090
+  organizationID: org_01JDQP70M348Z3M2FK7ZKS9Q1A

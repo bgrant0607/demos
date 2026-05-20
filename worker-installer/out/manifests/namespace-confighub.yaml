@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    confighub.com/BridgeWorkerID: 9d26ef28-f3bb-4b26-b2dc-e90c7e942451
+  name: confighub

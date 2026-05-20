@@ -1,0 +1,11 @@
+apiVersion: installer.confighub.com/v1alpha1
+kind: Facts
+metadata:
+  name: confighub-worker-facts
+spec:
+  package: confighub-worker
+  packageVersion: 0.1.0
+  values:
+    bridgeWorkerID: 9d26ef28-f3bb-4b26-b2dc-e90c7e942451
+    configHubURL: http://127.0.0.1:9090
+    image: ghcr.io/confighubai/confighub-worker:latest

@@ -1,0 +1,8 @@
+apiVersion: installer.confighub.com/v1alpha1
+kind: Selection
+metadata:
+  name: confighub-worker-selection
+spec:
+  package: confighub-worker
+  packageVersion: 0.1.0
+  base: default

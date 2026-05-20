@@ -1,0 +1,11 @@
+apiVersion: installer.confighub.com/v1alpha1
+kind: Inputs
+metadata:
+  name: confighub-worker-inputs
+spec:
+  package: confighub-worker
+  packageVersion: 0.1.0
+  namespace: confighub
+  values:
+    space: nonprod-worker
+    worker_slug: nonprod-worker

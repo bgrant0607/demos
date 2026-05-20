@@ -1,0 +1,36 @@
+apiVersion: installer.confighub.com/v1alpha1
+kind: ManifestIndex
+metadata:
+  name: confighub-worker-manifest-index
+spec:
+  package: confighub-worker
+  packageVersion: 0.1.0
+  files:
+    - filename: clusterrolebinding-confighub-confighub-worker-admin.yaml
+      slug: clusterrolebinding-confighub-confighub-worker-admin
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: confighub-confighub-worker-admin
+    - filename: configmap-confighub-confighub-worker-env.yaml
+      slug: configmap-confighub-confighub-worker-env
+      apiVersion: v1
+      kind: ConfigMap
+      name: confighub-worker-env
+      namespace: confighub
+    - filename: deployment-confighub-nonprod-worker.yaml
+      slug: deployment-confighub-nonprod-worker
+      apiVersion: apps/v1
+      kind: Deployment
+      name: nonprod-worker
+      namespace: confighub
+    - filename: namespace-confighub.yaml
+      slug: namespace-confighub
+      apiVersion: v1
+      kind: Namespace
+      name: confighub
+    - filename: serviceaccount-confighub-confighub-worker.yaml
+      slug: serviceaccount-confighub-confighub-worker
+      apiVersion: v1
+      kind: ServiceAccount
+      name: confighub-worker
+      namespace: confighub

@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    confighub.com/BridgeWorkerID: 9d26ef28-f3bb-4b26-b2dc-e90c7e942451
+  name: nonprod-worker
+  namespace: confighub
+spec:
+  minReadySeconds: 10
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nonprod-worker
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nonprod-worker
+    spec:
+      containers:
+        - env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          envFrom:
+            - configMapRef:
+                name: confighub-worker-env
+            - secretRef:
+                name: confighub-worker-secret
+          image: ghcr.io/confighubai/confighub-worker:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /internal/ok
+              port: 9092
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: worker
+          ports:
+            - containerPort: 9092
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /internal/ready
+              port: 9092
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 2
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+          startupProbe:
+            failureThreshold: 30
+            httpGet:
+              path: /internal/ok
+              port: 9092
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+      securityContext:
+        fsGroup: 2000
+        runAsGroup: 3000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: confighub-worker
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - emptyDir: {}
+          name: tmp
