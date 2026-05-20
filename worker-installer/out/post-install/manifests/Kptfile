@@ -17,6 +17,6 @@ upstreamLock:
     repo: https://github.com/bgrant0607/demos
     directory: /worker-installer/out/manifests
     ref: main
-    commit: 061fa080a25eacc8deb07c87b588af30e6b4cb8d
+    commit: 4ee9d10ba63b843acf82cf740da463d15cd35a07
 info:
   description: sample description
