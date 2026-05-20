@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: # kpt-merge: /confighub-confighub-worker-admin
+  annotations:
+    confighub.com/BridgeWorkerID: 9d26ef28-f3bb-4b26-b2dc-e90c7e942451
+    internal.kpt.dev/upstream-identifier: 'rbac.authorization.k8s.io|ClusterRoleBinding|default|confighub-confighub-worker-admin'
+  name: confighub-confighub-worker-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: confighub-worker
+    namespace: confighub

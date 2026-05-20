@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata: # kpt-merge: /confighub
+  annotations:
+    confighub.com/BridgeWorkerID: 9d26ef28-f3bb-4b26-b2dc-e90c7e942451
+    internal.kpt.dev/upstream-identifier: '|Namespace|default|confighub'
+  name: confighub
