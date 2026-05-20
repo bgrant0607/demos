@@ -29,7 +29,7 @@ spec:
                 name: confighub-worker-env
             - secretRef:
                 name: confighub-worker-secret
-          image: ghcr.io/confighubai/confighub-worker:latest
+          image: ghcr.io/confighubai/confighub-worker:v0.1.44
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
